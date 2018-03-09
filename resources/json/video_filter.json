@@ -1,0 +1,42 @@
+{
+	"name": "video_filter",
+	"calls": [
+		{
+			"source":{
+				"type": "image",
+				"frame_repeat": 300,
+				"is_pick_file": true
+			},
+			"output": {
+				"type": "image",
+				"dir": "%source.path_ne%_video_filter/",
+				"names": [
+					"advance_black_white/%02d.jpg", 30,
+					"black_white/%02d.jpg", 30,
+					"film/%02d.jpg", 30,
+					"gradient/%02d.jpg", 30,
+					"gradient2/%02d.jpg", 30,
+					"light_perception/%02d.jpg", 30,
+					"movie/%02d.jpg", 30,
+					"negative_film/%02d.jpg", 30,
+					"old/%02d.jpg", 30,
+					"red_black_white/%02d.jpg", 30
+				]
+			},
+			"props":{
+				"filter": [
+					"resources/video_filters/example_filter_advance_black_white.bundle", 30, 
+					"resources/video_filters/example_filter_black_white.bundle", 30, 
+					"resources/video_filters/example_filter_film.bundle", 30, 
+					"resources/video_filters/example_filter_gradient.bundle", 30, 
+					"resources/video_filters/example_filter_gradient2.bundle", 30, 
+					"resources/video_filters/example_filter_light_perception.bundle", 30, 
+					"resources/video_filters/example_filter_movie.bundle", 30, 
+					"resources/video_filters/example_filter_negative_film.bundle", 30, 
+					"resources/video_filters/example_filter_old.bundle", 30, 
+					"resources/video_filters/example_filter_red_black_white.bundle", 30
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,30 @@
+{
+	"name": "protrait_light_0",
+	"calls": [
+		{
+			"source":{
+				"type": "image",
+				"is_pick_folder": true,
+				"frame_repeat": [10, 30]
+			},
+			"output": {
+				"type": "image",
+				"dir": "%source.dir%/res/",
+				"out_flags": [10, [23, false], true, [2, true, true, true]],
+				"names":[10, "%03d_org.jpg", [3, "%03d_studio.jpg"], [3, "%03d_rim.jpg"]]
+			},
+			"setting": [
+				{
+					"prop_name": "light",
+					"params":{
+						"show_light_res": [10, [24, 0.0], [2, 0.0, 1.0, 0.0]],
+						"show_light_res_with_blur": [10, [24, 0.0], [2, 0.0, 0.0, 1.0]]
+					}					
+				}
+			],
+			"props":{
+				"light": [10, [24, ""], [3, "resources/props/PortraitLighting_X_studio.bundle"], [3, "resources/props/PortraitLighting_X_rim.bundle"]]
+			}
+		}
+	]
+}

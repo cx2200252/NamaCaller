@@ -211,19 +211,9 @@ bool Source::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & val)
 	if ("camera" == strType)
 	{
 		type = TYPE_CAMERA;
-		if (val.HasMember("cam_id") && val["cam_id"].IsInt())
-		{
-			cam_id = val["cam_id"].GetInt();
-		}
-
-		if (val.HasMember("width") && val["width"].IsInt())
-		{
-			size.width = val["width"].GetInt();
-		}
-		if (val.HasMember("height") && val["height"].IsInt())
-		{
-			size.height = val["height"].GetInt();
-		}
+		cam_id = json.ReadValue("cam_id", 0, val);
+		size.width = json.ReadValue("width", 1280, val);
+		size.height = json.ReadValue("height", 720, val);
 	}
 	else if ("image" == strType)
 	{
@@ -307,8 +297,9 @@ bool Source::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & val)
 		{
 			if (0 == frame_cnt)
 			{
+				int frame = static_cast<int>(cap.get(CV_CAP_PROP_FRAME_COUNT));
 				auto def_val = frame_repeat.val.empty() ? 1 : *frame_repeat.val.rbegin();
-				for (int i(0); i != imgPaths.size(); ++i)
+				for (int i(0); i != frame; ++i)
 				{
 					if (frame_repeat.val.size() <= i)
 						frame_cnt += def_val;
@@ -476,9 +467,9 @@ bool Output::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & val)
 			return false;
 		}
 		path = ".avi" != CmFile::GetExtention(path) ? (path + ".avi") : path;
-		fps = json.ReadValue("fps", 25.0f, val);
-		width = json.ReadValue("width", 1280, val);
-		height = json.ReadValue("height", 720, val);
+		fps = json.ReadValue("fps", -1.0f, val);
+		width = json.ReadValue("width", 0, val);
+		height = json.ReadValue("height", 0, val);
 		
 		SetReplaceStr(path);
 	}
@@ -560,7 +551,7 @@ void Output::SaveImage(cv::Mat img, const int frame_idx)
 	case TYPE_VIDEO:
 	{
 		cv::Size size(width, height);
-		if (0 == width || 0 == height)
+		if (0 >= width || 0 >= height)
 		{
 			size = img.size();
 		}
@@ -654,20 +645,10 @@ bool Setting::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & val, 
 			auto tmp = iter->value.GetFloat();
 			params_float.insert(std::make_pair(name, tmp));
 		}
-		if (iter->value.IsInt())
-		{
-			float tmp = static_cast<float>(iter->value.GetInt());
-			params_float.insert(std::make_pair(name, tmp));
-		}
 		else if (iter->value.IsString())
 		{
 			auto tmp = JsonGetStr(iter->value);
 			params_string.insert(std::make_pair(name, tmp));
-		}
-		else if (iter->value.IsBool())
-		{
-			auto tmp = iter->value.GetBool()==false ? 0.0f: 1.0f;
-			params_float.insert(std::make_pair(name, tmp));
 		}
 		else if (iter->value.IsArray())
 		{
@@ -713,10 +694,8 @@ bool Setting::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & val, 
 				for (int i(0); i != frame_cnt; ++i)
 				{
 					tmps.push_back(cur);
-					if (cur < to)
-					{
-						cur += step;
-					}
+					cur += step;
+					cur = std::min(cur, to);
 				}
 				params_floats.insert(std::make_pair(name, tmps));
 			}
@@ -830,9 +809,11 @@ bool PostProcess::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & v
 		{
 			tmp.type = TYPE_CMD;
 			tmp.cmd = json.ReadValue<std::string>("cmd", "", iter->value);
+			tmp.cmd = YXL::ToWindowsPath(tmp.cmd);
 			if (""==tmp.cmd)
 				continue;
 			tmp.params = json.ReadValue<std::string>("params", "", iter->value);
+			tmp.params = YXL::ToWindowsPath(tmp.params);
 			tmp.is_show = json.ReadValue("is_show", false, iter->value);
 			tmp.is_wait = json.ReadValue("is_wait", true, iter->value);
 
@@ -1039,10 +1020,7 @@ bool Call::LoadFromJson(YXL::JSON::Json& json, const rapidjson::Value & val)
 		}
 	}
 
-	if (val.HasMember("need_reset") && val["need_reset"].IsBool())
-	{
-		need_reset = val["need_reset"].GetBool();
-	}
+	need_reset = json.ReadValue("need_reset", false, val);
 
 	if (val.HasMember("setting") && val["setting"].IsArray())
 	{

@@ -1,3 +1,6 @@
+v2.0.1
+cmdline parameters format changed
+
 v2.0.0
 调整json文件格式，可控性增强
 

@@ -68,6 +68,6 @@
     <None Include="..\video_filter.json">
       <Filter>json</Filter>
     </None>
-    <None Include="v2.0.0.txt" />
+    <None Include="v2.0.1.txt" />
   </ItemGroup>
 </Project>

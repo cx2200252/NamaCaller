@@ -173,7 +173,7 @@
     <None Include="..\video_face_info.json" />
     <None Include="..\video_filter.json" />
     <None Include="deploy.bat" />
-    <None Include="v2.0.0.txt" />
+    <None Include="v2.0.1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

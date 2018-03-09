@@ -1,0 +1,1 @@
+bin\NamaCaller.exe -json "./resources/json/video_beauty.json" -wait 1 -opendir 0 -showconfig 1 -confirm 1

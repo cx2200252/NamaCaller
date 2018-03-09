@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Config.h"
 #include "Nama.h"
+#include <YXLHelper.h>
 
 //opengl
 #include <gl\glew.h>
@@ -21,41 +22,29 @@
 
 NC_config option;
 
+std::multimap<std::string, std::string> params;
+
 void CmdParser(int argc, char** argv)
 {
-	for (int i(1); i < argc; ++i)
-	{
-		std::string name = argv[i];
-		if (++i >= argc)
-		{
-			break;
-		}
-		std::string val = argv[i];
+	YXL::CmdLineParser(argc, argv, [](const std::string& name, const std::string& val) {
+		params.insert(std::make_pair(name, val));
+		return true;
+	});
 
-		if ("-json" == name)
-		{
-			option.jsonPath = val;
-		}
-		else if ("-jsoncontent" == name)
-		{
-			option.jsonContent = val;
-		}
-		else if ("-wait" == name)
-		{
-			option.Press2Exit = "1" == val ? true : false;
-		}
-		else if ("-opendir" == name)
-		{
-			option.OpenOutDir = "1" == val ? true : false;
-		}
-		else if ("-showconfig" == name)
-		{
-			option.ShowConfig = "1" == val ? true : false;
-		}
-		else if ("-confirm" == name)
-		{
-			option.NeedConfirm = "1" == val ? true : false;
-		}
+	for (auto param : params)
+	{
+		if("-json"==param.first)
+			option.jsonPath = param.second;
+		else if ("-jsoncontent" == param.first)//something wrong
+			option.jsonPath = param.second;
+		else if ("-wait" == param.first)
+			option.Press2Exit = "0" == param.second ? false : true;
+		else if ("-opendir" == param.first)
+			option.OpenOutDir = "0" == param.second ? false : true;
+		else if ("-showconfig" == param.first)
+			option.ShowConfig = "0" == param.second ? false : true;
+		else if ("-confirm" == param.first)
+			option.NeedConfirm = "0" == param.second ? false : true;
 	}
 }
 

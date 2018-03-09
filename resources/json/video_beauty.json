@@ -1,0 +1,31 @@
+{
+	"name": "video_beauty",
+	"calls": [
+		{
+			"source":{
+				"type": "video",
+				"is_pick_file": true,
+				"frame_repeat": [1, 120, 1]
+			},
+			"output": {
+				"type": "video",
+				"path": "%source.path_ne%_beauty.avi",
+				"out_flags": [1, [119, false], true]
+			},
+			"props":{
+				"beauty": "./resources/face_beautification.bundle"
+			},
+			"setting":[
+				{
+					"prop_name": "beauty",
+					"params": {
+						"color_level": 0.0,
+						"red_level": 0.0,
+						"blur_level": 5.0,
+						"face_shape_level": 0.0
+					}
+				}	
+			]
+		}
+	]
+}

@@ -1,0 +1,1 @@
+..\..\x64\release\NamaCaller.exe -json "resources\json\get_mesh.json" -wait 1 -opendir 1 -showconfig 1 -confirm 1

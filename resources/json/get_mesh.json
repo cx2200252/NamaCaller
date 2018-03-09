@@ -1,0 +1,31 @@
+{
+	"name": "get_mesh",
+	"calls": [
+		{
+			"source":{
+				"type": "image",
+				"is_pick_file": true,
+				"frame_repeat": [1, 120]
+			},
+			"output": {
+				"type": "image",
+				"dir": "%source.dir%/",
+				"out_flags": [1, [120, false]]
+			},
+			"setting": [
+				{
+					"prop_name": "saver",
+					"params":{
+						"is_save": [1, [119, 0.0], 1.0],
+						"neutral_face": 1.0,
+						"neutral_face_ext": 1.0,
+						"save_path": "%source.dir%/save"
+					}					
+				}
+			],
+			"props":{
+				"saver": "resources/face_info_saver.bundle"
+			}
+		}
+	]
+}
